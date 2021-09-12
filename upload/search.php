@@ -531,8 +531,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 		// Finally, lets loop through the results and output them
 		for ($i = 0; $i < count($search_set); ++$i)
 		{
-			@reset($forum_list);
-			while (list(, $temp) = @each($forum_list))
+			foreach ($forum_list as $temp)
 			{
 				if ($temp[0] == $search_set[$i]['forum_id'])
 					$forum = '<a href="viewforum.php?id='.$temp[0].'">'.pun_htmlspecialchars($temp[1]).'</a>';
