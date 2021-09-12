@@ -242,7 +242,7 @@ generate_admin_menu('options');
 
 		@natsort($languages);
 
-		while (list(, $temp) = @each($languages))
+		foreach ($languages as $temp)
 		{
 			if ($pun_config['o_default_lang'] == $temp)
 				echo "\t\t\t\t\t\t\t\t\t\t\t".'<option value="'.$temp.'" selected="selected">'.$temp.'</option>'."\n";
@@ -272,7 +272,7 @@ generate_admin_menu('options');
 
 		@natsort($styles);
 
-		while (list(, $temp) = @each($styles))
+		foreach ($styles as $temp)
 		{
 			if ($pun_config['o_default_style'] == $temp)
 				echo "\t\t\t\t\t\t\t\t\t".'<option value="'.$temp.'" selected="selected">'.str_replace('_', ' ', $temp).'</option>'."\n";
