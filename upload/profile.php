@@ -1387,7 +1387,7 @@ else
 							<select name="form[style]">
 <?php
 
-			while (list(, $temp) = @each($styles))
+			foreach ($styles as $temp)
 			{
 				if ($user['style'] == $temp)
 					echo "\t\t\t\t\t\t\t\t".'<option value="'.$temp.'" selected="selected">'.str_replace('_', ' ', $temp).'</option>'."\n";

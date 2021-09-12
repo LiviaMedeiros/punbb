@@ -517,8 +517,7 @@ function get_title($user)
 		// Are there any ranks?
 		if ($pun_config['o_ranks'] == '1' && !empty($pun_ranks))
 		{
-			@reset($pun_ranks);
-			while (list(, $cur_rank) = @each($pun_ranks))
+			foreach ($pun_ranks as $cur_rank)
 			{
 				if (intval($user['num_posts']) >= $cur_rank['min_posts'])
 					$user_title = pun_htmlspecialchars($cur_rank['rank']);
