@@ -304,22 +304,19 @@ function do_bbcode($text)
 {
 	global $lang_common, $pun_user;
 
-// TODO: reimplement it with preg_replace_callback or something
-/*
 	if (strpos($text, 'quote') !== false)
 	{
 		$text = str_replace('[quote]', '</p><blockquote><div class="incqbox"><p>', $text);
-		$text = preg_replace('#\[quote=(&quot;|"|\'|)(.*)\\1\]#seU', '"</p><blockquote><div class=\"incqbox\"><h4>".str_replace(array(\'[\', \'\\"\'), array(\'&#91;\', \'"\'), \'$2\')." ".$lang_common[\'wrote\'].":</h4><p>"', $text);
+		$text = preg_replace_callback('#\[quote=(&quot;|"|\'|)(.*)\\1\]#sU', function ($m) {
+			global $lang_common;
+			return '</p><blockquote><div class="incqbox"><h4>'.str_replace(array('[', '\\"'), array('&#91;', '"'), $m[2]).' '.$lang_common['wrote'].':</h4><p>';
+		}, $text);
 		$text = preg_replace('#\[\/quote\]\s*#', '</p></div></blockquote><p>', $text);
 	}
-*/
 
-// TODO: reimplement it with preg_replace_callback or something
 	$pattern = array('#\[b\](.*?)\[/b\]#s',
 					 '#\[i\](.*?)\[/i\]#s',
 					 '#\[u\](.*?)\[/u\]#s',
-//					 '#\[url\]([^\[]*?)\[/url\]#e',
-//					 '#\[url=([^\[]*?)\](.*?)\[/url\]#e',
 					 '#\[email\]([^\[]*?)\[/email\]#',
 					 '#\[email=([^\[]*?)\](.*?)\[/email\]#',
 					 '#\[color=([a-zA-Z]*|\#?[0-9a-fA-F]{6})](.*?)\[/color\]#s');
@@ -327,14 +324,19 @@ function do_bbcode($text)
 	$replace = array('<strong>$1</strong>',
 					 '<em>$1</em>',
 					 '<span class="bbu">$1</span>',
-//					 'handle_url_tag(\'$1\')',
-//					 'handle_url_tag(\'$1\', \'$2\')',
 					 '<a href="mailto:$1">$1</a>',
 					 '<a href="mailto:$1">$2</a>',
 					 '<span style="color: $1">$2</span>');
 
 	// This thing takes a while! :)
 	$text = preg_replace($pattern, $replace, $text);
+
+	$text = preg_replace_callback('#\[url\]([^\[]*?)\[/url\]#', function($m) {
+		return handle_url_tag($m[1]);
+	}, $text);
+	$text = preg_replace_callback('#\[url=([^\[]*?)\](.*?)\[/url\]#', function($m) {
+		return handle_url_tag($m[1], $m[2]);
+	}, $text);
 
 	return $text;
 }
@@ -349,9 +351,12 @@ function do_clickable($text)
 
 	$text = ' '.$text;
 
-// TODO: reimplement it with preg_replace_callback or something
-//	$text = preg_replace('#([\s\(\)])(https?|ftp|news){1}://([\w\-]+\.([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^"\s\(\)<\[]*)?)#ie', '\'$1\'.handle_url_tag(\'$2://$3\')', $text);
-//	$text = preg_replace('#([\s\(\)])(www|ftp)\.(([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^"\s\(\)<\[]*)?)#ie', '\'$1\'.handle_url_tag(\'$2.$3\', \'$2.$3\')', $text);
+	$text = preg_replace_callback('#([\s\(\)])(https?|ftp|news){1}://([\w\-]+\.([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^"\s\(\)<\[]*)?)#i', function($m) {
+		return $m[1].handle_url_tag($m[2].'://'.$m[3]);
+	}, $text);
+	$text = preg_replace_callback('#([\s\(\)])(www|ftp)\.(([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^"\s\(\)<\[]*)?)#i', function($m) {
+		return $m[1].handle_url_tag($m[2].$m[3], $m[2].$m[3]);
+	}, $text);
 
 	return substr($text, 1);
 }
@@ -408,8 +413,9 @@ function parse_message($text, $hide_smilies)
 		if ($pun_config['p_message_img_tag'] == '1')
 		{
 //			$text = preg_replace('#\[img\]((ht|f)tps?://)([^\s<"]*?)\.(jpg|jpeg|png|gif)\[/img\]#e', 'handle_img_tag(\'$1$3.$4\')', $text);
-// TODO: reimplement it with preg_replace_callback or something
-//			$text = preg_replace('#\[img\]((ht|f)tps?://)([^\s<"]*?)\[/img\]#e', 'handle_img_tag(\'$1$3\')', $text);
+			$text = preg_replace_callback('#\[img\]((ht|f)tps?://)([^\s<"]*?)\[/img\]#', function($m) {
+				return handle_img_tag($m[1].$m[3]);
+			}, $text);
 		}
 	}
 
@@ -470,8 +476,9 @@ function parse_signature($text)
 		if ($pun_config['p_sig_img_tag'] == '1')
 		{
 //			$text = preg_replace('#\[img\]((ht|f)tps?://)([^\s<"]*?)\.(jpg|jpeg|png|gif)\[/img\]#e', 'handle_img_tag(\'$1$3.$4\', true)', $text);
-// TODO: reimplement it with preg_replace_callback or something
-//			$text = preg_replace('#\[img\]((ht|f)tps?://)([^\s<"]*?)\[/img\]#e', 'handle_img_tag(\'$1$3\', true)', $text);
+			$text = preg_replace_callback('#\[img\]((ht|f)tps?://)([^\s<"]*?)\[/img\]#', function($m) {
+				return handle_img_tag($m[1].$m[3], true);
+			}, $text);
 		}
 	}
 
