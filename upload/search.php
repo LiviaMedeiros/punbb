@@ -533,7 +533,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 		{
 			foreach ($forum_list as $temp)
 			{
-				if ($temp[0] == $search_set[$i]['forum_id'])
+				if ($temp && $temp[0] == $search_set[$i]['forum_id'])
 					$forum = '<a href="viewforum.php?id='.$temp[0].'">'.pun_htmlspecialchars($temp[1]).'</a>';
 			}
 
