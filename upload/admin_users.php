@@ -255,7 +255,7 @@ else if (isset($_POST['find_user']))
 		$conditions[] = 'u.registered<'.$registered_before;
 
 	$like_command = ($db_type == 'pgsql') ? 'ILIKE' : 'LIKE';
-	while (list($key, $input) = @each($form))
+	foreach ($form as $key => $input)
 	{
 		if ($input != '' && in_array($key, array('username', 'email', 'title', 'realname', 'url', 'jabber', 'icq', 'msn', 'aim', 'yahoo', 'location', 'signature', 'admin_note')))
 			$conditions[] = 'u.'.$db->escape($key).' '.$like_command.' \''.$db->escape(str_replace('*', '%', $input)).'\'';

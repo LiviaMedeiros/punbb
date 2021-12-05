@@ -120,7 +120,7 @@ if (isset($_POST['form_sent']))
 	if ($form['timeout_online'] >= $form['timeout_visit'])
 		message('The value of "Timeout online" must be smaller than the value of "Timeout visit".');
 
-	while (list($key, $input) = @each($form))
+	foreach ($form as $key => $input)
 	{
 		// Only update values that have changed
 		if (array_key_exists('o_'.$key, $pun_config) && $pun_config['o_'.$key] != $input)
