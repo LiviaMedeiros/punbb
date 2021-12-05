@@ -722,6 +722,7 @@ function get_remote_address()
 //
 function pun_htmlspecialchars($str)
 {
+	$str ??= '';
 	$str = preg_replace('/&(?!#[0-9]+;)/s', '&amp;', $str);
 	$str = str_replace(array('<', '>', '"'), array('&lt;', '&gt;', '&quot;'), $str);
 
