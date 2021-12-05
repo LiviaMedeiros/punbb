@@ -175,7 +175,7 @@ class DBLayer
 
 	function close()
 	{
-		if ($this->link_id)
+		if ($this->link_id && is_resource($this->link_id))
 		{
 			if ($this->query_result && $this->query_result instanceof mysqli_result)
 				@mysqli_free_result($this->query_result);
