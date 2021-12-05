@@ -230,15 +230,13 @@ generate_admin_menu('categories');
 						<tbody>
 <?php
 
-	@reset($cat_list);
-	for ($i = 0; $i < $num_cats; ++$i)
-	{
-		list(, list($cat_id, $cat_name, $position)) = @each($cat_list);
+	$i = 0;
+	foreach ($cat_list as [$cat_id, $cat_name, $position]) {
 
 ?>
 							<tr><td><input type="text" name="cat_name[<?php echo $i ?>]" value="<?php echo pun_htmlspecialchars($cat_name) ?>" size="35" maxlength="80" /></td><td><input type="text" name="cat_order[<?php echo $i ?>]" value="<?php echo $position ?>" size="3" maxlength="3" /></td><td>&nbsp;</td></tr>
 <?php
-
+		$i++;
 	}
 
 ?>

@@ -656,7 +656,7 @@ else if (isset($_POST['form_sent']))
 	{
 		$form = array();
 
-		while (list($key, $value) = @each($_POST['form']))
+		foreach ($_POST['form'] as $key => $value)
 		{
 		    if (in_array($key, $allowed_elements))
 		        $form[$key] = $value;
@@ -841,7 +841,7 @@ else if (isset($_POST['form_sent']))
 
 	// Singlequotes around non-empty values and NULL for empty values
 	$temp = array();
-	while (list($key, $input) = @each($form))
+	foreach ($form as $key => $input)
 	{
 		$value = ($input !== '') ? '\''.$db->escape($input).'\'' : 'NULL';
 
@@ -1170,7 +1170,7 @@ else
 							<br /><select name="form[language]">
 <?php
 
-			while (list(, $temp) = @each($languages))
+			foreach ($languages as $temp)
 			{
 				if ($user['language'] == $temp)
 					echo "\t\t\t\t\t\t\t\t".'<option value="'.$temp.'" selected="selected">'.$temp.'</option>'."\n";
