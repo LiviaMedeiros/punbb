@@ -55,7 +55,7 @@ $pun_start = ((float)$usec + (float)$sec);
 error_reporting(E_ALL ^ E_NOTICE);
 
 // Seed the random number generator
-mt_srand((double)microtime()*1000000);
+mt_srand(intval(microtime(true)*1000000));
 
 // If a cookie name is not specified in config.php, we use the default (punbb_cookie)
 if (empty($cookie_name))
