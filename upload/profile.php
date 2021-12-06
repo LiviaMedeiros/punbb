@@ -654,15 +654,9 @@ else if (isset($_POST['form_sent']))
 	// Extract allowed elements from $_POST['form']
 	function extract_elements($allowed_elements)
 	{
-		$form = array();
-
-		foreach ($_POST['form'] as $key => $value)
-		{
-		    if (in_array($key, $allowed_elements))
-		        $form[$key] = $value;
-		}
-
-		return $form;
+		if (empty($_POST['form']) || !is_array($_POST['form']))
+			return [];
+		return array_filter($_POST['form'], fn($key) => in_array($key, $allowed_elements), ARRAY_FILTER_USE_KEY);
 	}
 
 	$username_updated = false;
@@ -687,7 +681,7 @@ else if (isset($_POST['form_sent']))
 					if (strlen($form['username']) < 2)
 						message($lang_prof_reg['Username too short']);
 					else if (pun_strlen($form['username']) > 25)	// This usually doesn't happen since the form element only accepts 25 characters
-					    message($lang_common['Bad request']);
+						message($lang_common['Bad request']);
 					else if (!strcasecmp($form['username'], 'Guest') || !strcasecmp($form['username'], $lang_common['Guest']))
 						message($lang_prof_reg['Username guest']);
 					else if (preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $form['username']))
