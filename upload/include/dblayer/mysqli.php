@@ -94,7 +94,7 @@ class DBLayer
 	}
 
 
-	function result($query_id = 0, $row = 0)
+	function result($query_id = 0, $row = 0, $col = 0)
 	{
 		if ($query_id)
 		{
@@ -102,7 +102,7 @@ class DBLayer
 				@mysqli_data_seek($query_id, $row);
 
 			$cur_row = @mysqli_fetch_row($query_id);
-			return $cur_row[0];
+			return $cur_row ? $cur_row[$col] : false;
 		}
 		else
 			return false;
