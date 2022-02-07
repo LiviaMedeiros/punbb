@@ -63,8 +63,8 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 	// If it's a regular search (keywords and/or author)
 	else if ($action == 'search')
 	{
-		$keywords = (isset($_GET['keywords'])) ? strtolower(trim($_GET['keywords'])) : null;
-		$author = (isset($_GET['author'])) ? strtolower(trim($_GET['author'])) : null;
+		$keywords = (isset($_GET['keywords'])) ? strtolower(trim($_GET['keywords'])) : '';
+		$author = (isset($_GET['author'])) ? strtolower(trim($_GET['author'])) : '';
 
 		if (preg_match('#^[\*%]+$#', $keywords) || strlen(str_replace(array('*', '%'), '', $keywords)) < 3)
 			$keywords = '';
